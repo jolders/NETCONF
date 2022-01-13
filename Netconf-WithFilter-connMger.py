@@ -37,14 +37,20 @@ with manager.connect(host=router['host'], port=router['port'], username=router['
 
 interface_python = xmltodict.parse(interface_netconf.xml)["rpc-reply"]["data"]
 # print the dictionary by uncommenting line below
-# pprint(interface_python)
+pprint(interface_python)
 intname = str(interface_python['interfaces']['interface']['name'])
 # prittyinterface = str(intname)
 print(intname)
 config = interface_python["interfaces"]["interface"]
 op_state = interface_python["interfaces-state"]["interface"]
 
-print("START")
+print("-------------*** INFORMATION COLLECTTION -> START ***-------------")
 print(f"NAME: {config['name']}")
 print(f"DESCRIPTION: {config['description']}")
+print(f"IP address : {config['ipv4']['address']['ip']}")
+print(f"Netmask : {config['ipv4']['address']['netmask']}")
+print(f"ENABLED: {config['enabled']}")
 print(f"PACKETS in: {op_state['statistics']['in-unicast-pkts']}")
+print(f"Operational status : {op_state['admin-status']}")
+print(f"Admin status: {op_state['admin-status']}")
+print("-------------*** INFORMATION COLLECTTION -> END ***-------------")
