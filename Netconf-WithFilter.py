@@ -11,18 +11,20 @@ router = {
 }
 
 m = manager.connect(host=router['ip'], port=router['port'], username=router['username'],
-                    password=router['password'], device_params={'name':'iosxe'}, hostkey_verify=False)
+                    password=router['password'], device_params={'name': 'iosxe'}, hostkey_verify=False)
 
 netconf_filter = """
 <filter xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
-  <interfaces xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces"> 
-     <interface> 
-      <name>GigabitEthernet5</name> 
+  <interfaces xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces">
+     <interface>
+       <name>GigabitEthernet1</name>
      </interface>
-  </interfaces> 
+  </interfaces>
 </filter> """
 
 running_config = m.get_config('running', netconf_filter)
 
 running_config_xml = xmltodict.parse(running_config.xml)["rpc-reply"]["data"]
 print(xml.dom.minidom.parseString(str(running_config)).toprettyxml())
+
+m.close_session()
